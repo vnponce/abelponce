@@ -94,13 +94,13 @@
             <h1 class="my-4 text-5xl font-bold leading-tight">I'm Abel</h1>
             <p class="leading-normal text-2xl mb-8">Laravel ReactJs/VueJs Developer</p>
             <p class="leading-normal text-2xl mb-8">I'm a telecommunications engineer
-                that enjoy coding, internet lover,
-                soccer fan and passionate in a
+                that enjoys coding, internet lover,
+                soccer fan and passionate in
                 constant learning.
                 Web Developer with more than 5
                 years of experience, being
                 specializing in Laravel, ReactJS and
-                VueJS and Test Driven Development</p>
+                VueJS and Test-Driven Development</p>
 
 
 
