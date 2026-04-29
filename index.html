@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ponce, A. — Field Notebook · Vol. III</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eae3d2;
+    --paper-dark:#d8cfb6;
+    --grid:#7e9a8f;
+    --grid-soft:rgba(126,154,143,.22);
+    --ink:#1c2218;
+    --ink-2:#3e4538;
+    --ink-3:#6a6f5e;
+    --hand:#1d3d8a;
+    --stamp:#a8311b;
+    --coffee:#6b4326;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);}
+  body{
+    font-family:"STIX Two Text", "Times New Roman", serif;
+    font-size:15px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--stamp); color:var(--paper);}
+
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:1;
+    background-image:
+      linear-gradient(var(--grid-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-soft) 1px, transparent 1px),
+      linear-gradient(rgba(126,154,143,.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(126,154,143,.12) 1px, transparent 1px);
+    background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  }
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:2;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(0,0,0,.04), transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(60,40,10,.05), transparent 60%);
+    mix-blend-mode:multiply;
+  }
+
+  .frame{position:relative; z-index:3; max-width:1280px; margin:0 auto; padding:48px 56px 96px;}
+
+  /* —— sheet head —— */
+  .sheet-head{
+    display:grid; grid-template-columns: 1fr auto 1fr;
+    border-top:2px solid var(--ink); border-bottom:1px solid var(--ink);
+    padding:14px 0; align-items:center;
+    font-family:"Courier Prime", monospace; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  .sheet-head .l{display:flex; gap:24px;}
+  .sheet-head .l span b{color:var(--stamp); font-weight:700;}
+  .sheet-head .c{justify-self:center; font-family:"STIX Two Text", serif; font-style:italic; font-size:13px; letter-spacing:.04em;}
+  .sheet-head .r{justify-self:end; display:flex; gap:24px;}
+
+  .fields{
+    display:grid; grid-template-columns: repeat(5, 1fr);
+    border-bottom:1px solid var(--ink);
+    font-family:"Courier Prime", monospace; font-size:11px;
+  }
+  .fields .f{padding:8px 14px 8px 0; border-right:1px dashed var(--ink-3); display:flex; gap:10px; align-items:baseline;}
+  .fields .f:last-child{border-right:none}
+  .fields .k{color:var(--ink-3); letter-spacing:.16em; text-transform:uppercase;}
+  .fields .v{color:var(--ink); flex:1;}
+  .fields .v.hand{font-family:"Caveat", cursive; color:var(--hand); font-size:18px; line-height:1; transform:rotate(-1.5deg); transform-origin:left;}
+
+  /* —— OPENING (foco en voz, no números) —— */
+  .opening{padding:64px 0 32px; position:relative;}
+  .opening .ident{
+    font-family:"Courier Prime", monospace; font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--ink-3); margin-bottom:18px;
+  }
+  .opening .ident b{color:var(--stamp);}
+  .opening h1{
+    font-family:"STIX Two Text", serif; font-weight:400;
+    font-size:clamp(40px, 5.4vw, 78px); line-height:1.04; letter-spacing:-.012em;
+    margin:0 0 28px; max-width:18ch;
+  }
+  .opening h1 em{font-style:italic;}
+  .opening h1 .accent{color:var(--stamp);}
+  .opening .tag{
+    font-family:"STIX Two Text", serif; font-style:italic;
+    font-size:20px; line-height:1.45; max-width:48ch;
+    color:var(--ink-2); margin:0 0 36px;
+  }
+  .opening .author{font-family:"STIX Two Text", serif; font-size:17px; margin-bottom:6px;}
+  .opening .author sup{font-size:.7em; color:var(--stamp);}
+  .opening .aff{font-family:"STIX Two Text", serif; font-style:italic; font-size:13.5px; color:var(--ink-2); margin-bottom:0;}
+
+  /* stamp */
+  .stamp{
+    position:absolute; right:24px; top:60px;
+    border:3px double var(--stamp); padding:10px 22px;
+    color:var(--stamp); font-family:"Courier Prime", monospace;
+    font-weight:700; font-size:12px; letter-spacing:.2em;
+    text-align:center; transform:rotate(8deg) scale(1.4); opacity:0;
+    transition:opacity .35s, transform .35s cubic-bezier(.2,1.6,.4,1);
+  }
+  .stamp.on{opacity:.86; transform:rotate(8deg) scale(1);}
+  .stamp .big{font-size:22px; letter-spacing:.18em; display:block; line-height:1; margin-bottom:6px;}
+  .stamp .sub{font-size:10px; letter-spacing:.18em;}
+
+  /* —— sec head numbered —— */
+  .sec{padding:48px 0 0; position:relative;}
+  .sec h2{font-family:"STIX Two Text", serif; font-weight:500; font-size:22px; margin:0 0 4px;}
+  .sec h2 .n{font-family:"Courier Prime", monospace; color:var(--stamp); margin-right:14px; font-weight:700;}
+  .sec .lead{font-family:"STIX Two Text", serif; font-style:italic; color:var(--ink-2); font-size:14px; margin:0 0 24px; padding-bottom:14px; border-bottom:1px solid var(--ink);}
+
+  /* —— §1 voice / who I am —— */
+  .voice{
+    display:grid; grid-template-columns: 1.3fr .9fr; gap:48px;
+    padding:8px 0 8px;
+  }
+  .voice .body p{margin:0 0 14px; font-size:16px; line-height:1.7;}
+  .voice .body p:first-child::first-letter{
+    font-family:"STIX Two Text", serif; font-weight:500;
+    font-size:54px; line-height:.85; float:left; padding:8px 10px 0 0;
+    color:var(--stamp);
+  }
+  .voice .body p .sc{font-variant:small-caps; letter-spacing:.06em;}
+  .voice .body p b{color:var(--stamp); font-weight:500;}
+  .voice .marg{
+    border-left:1px solid var(--ink-3); padding-left:24px;
+  }
+  .voice .marg .lbl{
+    font-family:"Courier Prime", monospace; font-size:10px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--stamp); margin-bottom:14px;
+  }
+  .voice .marg .row{
+    display:grid; grid-template-columns:90px 1fr; gap:8px 14px;
+    padding:9px 0; border-bottom:1px dashed var(--ink-3);
+    font-size:13px;
+  }
+  .voice .marg .row:last-child{border-bottom:none;}
+  .voice .marg .k{font-family:"Courier Prime", monospace; font-size:10.5px; color:var(--ink-3); letter-spacing:.1em; text-transform:uppercase; padding-top:2px;}
+  .voice .marg .v{font-family:"STIX Two Text", serif;}
+  .voice .marg .v.hand{font-family:"Caveat", cursive; color:var(--hand); font-size:18px; line-height:1.1;}
+
+  /* —— §2 manifesto — five marginalia —— */
+  .manifesto{
+    display:grid; grid-template-columns:repeat(5, 1fr);
+    border:2px solid var(--ink); background:rgba(255,255,255,.16);
+  }
+  .manif{
+    padding:22px 18px; border-right:1px solid var(--ink-3); position:relative;
+  }
+  .manif:last-child{border-right:none}
+  .manif .num{
+    font-family:"STIX Two Text", serif; font-size:36px; line-height:1;
+    color:var(--stamp); margin-bottom:10px; font-weight:500;
+  }
+  .manif .ttl{
+    font-family:"STIX Two Text", serif; font-style:italic; font-size:18px;
+    line-height:1.25; margin-bottom:10px; color:var(--ink);
+  }
+  .manif .body{font-size:13px; line-height:1.55; color:var(--ink-2);}
+
+  /* —— §3 figure (drawing) —— */
+  .figure-block{
+    border:2px solid var(--ink); margin:24px 0; background:rgba(255,255,255,.18);
+  }
+  .figure-block .cap{
+    font-family:"STIX Two Text", serif; font-style:italic; font-size:13px;
+    color:var(--ink-2); padding:10px 14px; border-top:1px solid var(--ink-3);
+    background:var(--paper-dark);
+  }
+  .figure-block .cap b{font-family:"Courier Prime", monospace; font-style:normal; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--stamp); margin-right:10px;}
+  svg.diagram{display:block; width:100%; height:auto; padding:24px;}
+  svg.diagram .stroke{
+    stroke:#1c2218; fill:none; stroke-width:1.2;
+    stroke-dasharray:1200; stroke-dashoffset:1200;
+    transition:stroke-dashoffset 1.6s ease;
+  }
+  svg.diagram.drawn .stroke{stroke-dashoffset:0;}
+  svg.diagram .delay-1{transition-delay:.0s}
+  svg.diagram .delay-2{transition-delay:.4s}
+  svg.diagram .delay-3{transition-delay:.8s}
+  svg.diagram .delay-4{transition-delay:1.2s}
+  svg.diagram .delay-5{transition-delay:1.6s}
+  svg.diagram .delay-6{transition-delay:2.0s}
+  svg.diagram text{font-family:"Courier Prime", monospace; font-size:10.5px; fill:var(--ink); letter-spacing:.06em; opacity:0; transition:opacity .5s 2.2s ease;}
+  svg.diagram.drawn text{opacity:1;}
+  svg.diagram .lbl{font-family:"STIX Two Text", serif; font-style:italic; font-size:12px; fill:var(--ink);}
+  svg.diagram .num-t{font-family:"STIX Two Text", serif; font-size:14px; fill:var(--stamp); font-weight:500;}
+  svg.diagram .h-note{font-family:"Caveat", cursive; font-size:18px; fill:var(--hand); opacity:0; transition:opacity .8s 2.8s ease;}
+  svg.diagram.drawn .h-note{opacity:1;}
+  svg.diagram .stamp-t{font-family:"Courier Prime", monospace; font-weight:700; font-size:9px; fill:var(--stamp); letter-spacing:.18em;}
+
+  /* light table 1 (the project, non-hero) */
+  table.spec{
+    width:100%; border-collapse:collapse; font-size:13px;
+    border:1px solid var(--ink-3); margin:0 0 12px;
+    background:rgba(255,255,255,.14);
+  }
+  table.spec caption{caption-side:top; text-align:left; padding:0 0 10px; font-family:"STIX Two Text", serif; font-style:italic; font-size:13px; color:var(--ink-2);}
+  table.spec caption b{color:var(--stamp); font-style:normal; font-family:"Courier Prime", monospace; font-size:11px; letter-spacing:.16em; margin-right:10px; text-transform:uppercase;}
+  table.spec th{text-align:left; font-family:"Courier Prime", monospace; font-weight:700; font-size:10px; letter-spacing:.18em; text-transform:uppercase; padding:8px 12px; border-bottom:1px solid var(--ink); color:var(--ink); background:var(--paper-dark);}
+  table.spec td{padding:11px 12px; border-bottom:1px dashed var(--ink-3); vertical-align:top;}
+  table.spec tr:last-child td{border-bottom:none;}
+  table.spec td.id{font-family:"Courier Prime", monospace; font-weight:700; color:var(--stamp); width:40px;}
+  table.spec td.name{font-weight:500; width:160px;}
+  table.spec td.name .stack-line{display:block; font-family:"Courier Prime", monospace; font-size:10px; color:var(--ink-3); margin-top:3px; letter-spacing:.04em;}
+  table.spec td.fn{color:var(--ink-2);}
+
+  /* —— §4 chapters — Lovevery / Nuvocargo / AWS as qualitative chapters —— */
+  .chapters{display:flex; flex-direction:column; gap:0; border:2px solid var(--ink); background:rgba(255,255,255,.14);}
+  .chap{
+    display:grid; grid-template-columns: 90px 1fr 220px;
+    gap:0; border-bottom:1px solid var(--ink-3); padding:0;
+  }
+  .chap:last-child{border-bottom:none;}
+  .chap > div{padding:24px 22px; border-right:1px dashed var(--ink-3);}
+  .chap > div:last-child{border-right:none;}
+  .chap .col-num{
+    font-family:"Courier Prime", monospace; color:var(--stamp);
+    font-weight:700; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    text-align:center;
+  }
+  .chap .col-num b{display:block; font-family:"STIX Two Text", serif; font-size:38px; color:var(--stamp); margin-top:6px; font-weight:500;}
+  .chap .col-body h4{font-family:"STIX Two Text", serif; font-weight:500; font-size:20px; margin:0 0 4px;}
+  .chap .col-body .role{font-family:"Courier Prime", monospace; font-size:10.5px; letter-spacing:.16em; color:var(--ink-3); text-transform:uppercase; margin-bottom:14px; display:block;}
+  .chap .col-body p{margin:0 0 10px; font-size:14.5px; line-height:1.6;}
+  .chap .col-body p .sc{font-variant:small-caps; letter-spacing:.06em;}
+  .chap .col-side{
+    font-family:"Caveat", cursive; color:var(--hand); font-size:18px;
+    line-height:1.3; transform:rotate(-1.5deg); transform-origin:left top;
+    align-self:start;
+  }
+  .chap .col-side .pin{
+    display:inline-block; padding:2px 10px;
+    border:1px dashed var(--hand); margin-bottom:10px;
+    font-family:"Courier Prime", monospace; font-size:9px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--hand); transform:rotate(1.5deg);
+  }
+
+  /* —— §5 method —— */
+  .method{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:32px;
+    padding-top:8px;
+  }
+  .method .body p{margin:0 0 14px; font-size:15.5px; line-height:1.65;}
+  .method .body p b{color:var(--stamp); font-weight:500;}
+  .method .reagents{border:2px solid var(--ink); padding:0; background:rgba(255,255,255,.16);}
+  .method .reagents h4{font-family:"Courier Prime", monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--stamp); margin:0; padding:10px 14px; border-bottom:2px solid var(--ink); background:var(--paper-dark);}
+  .method .reagents ul{list-style:none; padding:0; margin:0;}
+  .method .reagents li{display:grid; grid-template-columns: 100px 1fr 24px; gap:8px; padding:9px 14px; border-bottom:1px dashed var(--ink-3); font-family:"Courier Prime", monospace; font-size:11.5px; align-items:baseline;}
+  .method .reagents li:last-child{border-bottom:none;}
+  .method .reagents li .nm{font-weight:700; color:var(--ink);}
+  .method .reagents li .why{color:var(--ink-2); font-family:"STIX Two Text", serif; font-size:13px; font-style:italic;}
+  .method .reagents li .qty{color:var(--stamp); text-align:right; font-weight:700;}
+
+  /* —— §6 contact + signed —— */
+  .signoff{margin-top:48px; padding:48px 0 0; border-top:2px solid var(--ink); display:grid; grid-template-columns:1.4fr 1fr; gap:48px;}
+  .signoff h2{font-family:"STIX Two Text", serif; font-weight:400; font-size:42px; margin:0 0 16px; line-height:1.05; max-width:14ch;}
+  .signoff h2 em{font-style:italic; color:var(--stamp);}
+  .signoff .lead{font-size:15px; max-width:42ch; color:var(--ink-2); margin:0 0 28px;}
+  .corresp{border:1px solid var(--ink); background:rgba(255,255,255,.16);}
+  .corresp .hd{padding:10px 14px; background:var(--paper-dark); border-bottom:2px solid var(--ink); font-family:"Courier Prime", monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--stamp);}
+  .corresp ul{list-style:none; padding:0; margin:0;}
+  .corresp li{display:grid; grid-template-columns:120px 1fr auto; gap:12px; padding:12px 14px; border-bottom:1px dashed var(--ink-3); align-items:baseline;}
+  .corresp li:last-child{border-bottom:none}
+  .corresp li .k{font-family:"Courier Prime", monospace; font-size:10px; color:var(--ink-3); letter-spacing:.16em; text-transform:uppercase;}
+  .corresp li a{color:var(--ink); font-size:15px; text-decoration:none; border-bottom:1px solid transparent;}
+  .corresp li a:hover{border-bottom-color:var(--stamp); color:var(--stamp);}
+  .corresp li .arr{color:var(--stamp); font-family:"Courier Prime", monospace; font-size:13px;}
+  .cv-btn{display:inline-block; margin-top:14px; border:2px solid var(--ink); background:var(--ink); color:var(--paper); font-family:"Courier Prime", monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; padding:14px 22px; text-decoration:none; transition:background .2s, color .2s;}
+  .cv-btn::before{content:"⎙ "; margin-right:6px;}
+  .cv-btn:hover{background:var(--stamp); border-color:var(--stamp);}
+
+  /* —— animated signature: mask-reveal of cursive type —— */
+  .sig-wrap{margin-top:24px; padding-top:14px; border-top:1px solid var(--ink-3);}
+  .sig-wrap .sig{
+    position:relative; display:inline-block;
+    font-family:"Caveat", cursive; font-weight:600;
+    color:var(--hand); font-size:54px; line-height:1;
+    transform:rotate(-3deg); transform-origin:left center;
+    padding:6px 0 14px;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 0%, transparent 0%);
+            mask-image: linear-gradient(90deg, #000 0%, #000 0%, transparent 0%);
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    -webkit-mask-size:100% 100%; mask-size:100% 100%;
+    transition: -webkit-mask-image 2.2s ease, mask-image 2.2s ease;
+  }
+  .sig-wrap .sig::after{
+    content:""; position:absolute; left:0; right:0; bottom:6px; height:1px;
+    background:var(--hand); opacity:.4; transform:scaleX(0); transform-origin:left center;
+    transition:transform 2.4s ease .2s;
+  }
+  .sig-wrap.drawn .sig{
+    -webkit-mask-image: linear-gradient(90deg, #000 100%, #000 100%, transparent 100%);
+            mask-image: linear-gradient(90deg, #000 100%, #000 100%, transparent 100%);
+  }
+  .sig-wrap.drawn .sig::after{transform:scaleX(1);}
+  .sig-wrap .meta{display:block; font-family:"Courier Prime", monospace; color:var(--ink-3); font-size:11px; letter-spacing:.14em; margin-top:8px; text-transform:uppercase;}
+
+  /* —— colophon —— */
+  .colophon{margin-top:60px; padding-top:18px; border-top:1px solid var(--ink); display:grid; grid-template-columns:1fr auto 1fr; font-family:"Courier Prime", monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);}
+  .colophon .c{justify-self:center;}
+  .colophon .r{justify-self:end;}
+
+  /* —— coffee ring stains (revealed on scroll) —— */
+  .stain{
+    position:absolute; pointer-events:none; z-index:4; opacity:0;
+    transition:opacity 1.6s ease;
+  }
+  .stain.on{opacity:.7;}
+  .stain svg{display:block;}
+
+  /* —— scroll reveal —— */
+  .reveal{opacity:0; transform:translateY(10px); transition:opacity .9s ease, transform .9s ease;}
+  .reveal.in{opacity:1; transform:none;}
+
+  @media (max-width:900px){
+    .frame{padding:24px 20px}
+    .fields{grid-template-columns:1fr 1fr}
+    .opening h1{font-size:36px}
+    .voice{grid-template-columns:1fr}
+    .manifesto{grid-template-columns:1fr 1fr; border-right:none;}
+    .manif{border-right:1px solid var(--ink-3); border-bottom:1px solid var(--ink-3);}
+    .chap{grid-template-columns:1fr}
+    .chap > div{border-right:none}
+    .method{grid-template-columns:1fr}
+    .signoff{grid-template-columns:1fr}
+    .stamp{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="frame" id="frame">
+
+  <!-- coffee stains, positioned absolutely on the page -->
+  <div class="stain" style="top:520px; right:60px; width:140px;" data-stain>
+    <svg viewBox="0 0 200 200">
+      <defs>
+        <radialGradient id="cof1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#6b4326" stop-opacity=".0"/>
+          <stop offset="68%" stop-color="#6b4326" stop-opacity=".05"/>
+          <stop offset="82%" stop-color="#5a3818" stop-opacity=".42"/>
+          <stop offset="92%" stop-color="#6b4326" stop-opacity=".22"/>
+          <stop offset="100%" stop-color="#6b4326" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="100" cy="100" rx="92" ry="86" fill="url(#cof1)"/>
+      <ellipse cx="92" cy="108" rx="78" ry="72" fill="none" stroke="#5a3818" stroke-width="1.6" opacity=".18"/>
+    </svg>
+  </div>
+  <div class="stain" style="top:1700px; left:40px; width:90px;" data-stain>
+    <svg viewBox="0 0 200 200">
+      <ellipse cx="100" cy="100" rx="80" ry="74" fill="url(#cof1)"/>
+    </svg>
+  </div>
+  <div class="stain" style="top:2700px; right:20%; width:110px;" data-stain>
+    <svg viewBox="0 0 200 200">
+      <ellipse cx="100" cy="100" rx="86" ry="80" fill="url(#cof1)"/>
+      <ellipse cx="105" cy="96" rx="70" ry="68" fill="none" stroke="#5a3818" stroke-width="1.4" opacity=".22"/>
+    </svg>
+  </div>
+
+  <!-- sheet head -->
+  <header class="sheet-head">
+    <div class="l">
+      <span>Lab notebook · vol. <b>III</b></span>
+      <span>Sheet <b>001 / 087</b></span>
+    </div>
+    <div class="c">— Personal Log of an AI Engineer at Work —</div>
+    <div class="r">
+      <span>UTC <b>−6</b></span>
+      <span>Edition · <b>current</b></span>
+    </div>
+  </header>
+
+  <div class="fields">
+    <div class="f"><span class="k">Subject</span><span class="v hand">A. Ponce</span></div>
+    <div class="f"><span class="k">Discipline</span><span class="v hand">AI engineering · backend infra</span></div>
+    <div class="f"><span class="k">Years</span><span class="v">10 · production</span></div>
+    <div class="f"><span class="k">Pages</span><span class="v">001 — 087</span></div>
+    <div class="f"><span class="k">Status</span><span class="v" style="color:var(--stamp)">OPEN · ACCEPTING</span></div>
+  </div>
+
+  <!-- OPENING -->
+  <section class="opening">
+    <div class="stamp" id="stamp">
+      <span class="big">SHIPPED</span>
+      <span class="sub">PROD · '15 — '26</span>
+    </div>
+
+    <div class="ident">Personal log · entry 087 · <b>open notes from a working engineer</b></div>
+
+    <h1>I ship the <em>plumbing</em> that makes <span class="accent">LLMs</span> production-ready.</h1>
+
+    <p class="tag">
+      Senior <em>AI engineer</em>, ten years in production. Gateways, RAG,
+      agent orchestration, evals — the unsexy infrastructure that keeps a
+      model honest. The notebook below is how I think — fewer numbers,
+      more decisions.
+    </p>
+
+    <div class="author">Abel Ponce<sup>1</sup></div>
+    <div class="aff"><sup>1</sup>Senior AI Engineer · Go · Python · AWS · Temporal · pgvector · freelance, US/LatAm.</div>
+  </section>
+
+  <!-- §1 VOICE -->
+  <section class="sec reveal">
+    <h2><span class="n">§1.</span>What I do</h2>
+    <div class="lead">— in plain language, before the diagrams.</div>
+
+    <div class="voice">
+      <div class="body">
+        <p>
+          I write the unsexy half of an AI product: the gateway that doesn&rsquo;t
+          drop the request when a provider degrades, the retrieval layer that
+          doesn&rsquo;t lie to the model, the orchestrator that survives a
+          three-minute LLM timeout, the evals that catch a regression before
+          a user does. Most of my work is invisible by design — when it&rsquo;s
+          working, nothing happens.
+        </p>
+        <p>
+          I care about <span class="sc">failure modes</span> more than
+          features. I write tests against real infrastructure, not in-memory
+          imitations — and TDD matters more in the era of agents, not less.
+          I&rsquo;d rather defend a small decision in writing than ship a
+          clever one in silence. <b>The work is the pitch</b> — the rest of
+          this notebook is the work.
+        </p>
+        <p>
+          I&rsquo;m available for senior, freelance engagements across the
+          United States and Latin America. Contracts, fractional, or one
+          hard AI problem you&rsquo;d like me to take off your plate.
+        </p>
+      </div>
+      <aside class="marg">
+        <div class="lbl">Field card</div>
+        <div class="row"><span class="k">Languages</span><span class="v">Python · Go · TypeScript</span></div>
+        <div class="row"><span class="k">Comfort zone</span><span class="v">Agents, retrieval, AI infrastructure</span></div>
+        <div class="row"><span class="k">Method</span><span class="v hand">Ask first. Ship with tests. Write it down.</span></div>
+        <div class="row"><span class="k">Located</span><span class="v">UTC −6</span></div>
+        <div class="row"><span class="k">Overlap</span><span class="v">US-PT · LatAm 0–3h</span></div>
+        <div class="row"><span class="k">Timeframe</span><span class="v hand">Open · accepting</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- §2 MANIFESTO -->
+  <section class="sec reveal">
+    <h2><span class="n">§2.</span>Five things I believe</h2>
+    <div class="lead">— opinions worth defending in writing.</div>
+
+    <div class="manifesto">
+      <div class="manif">
+        <div class="num">i.</div>
+        <div class="ttl">The right tool is the one whose <em>failure mode</em> you can describe in one sentence.</div>
+        <div class="body">If you can&rsquo;t name what breaks first, you don&rsquo;t understand the choice — you&rsquo;re repeating marketing. This is the filter behind every decision in §3.</div>
+      </div>
+      <div class="manif">
+        <div class="num">ii.</div>
+        <div class="ttl">TDD matters <em>more</em> in the era of agents, not less.</div>
+        <div class="body">Non-deterministic systems need more tests, not fewer. Real Postgres in containers, factories over mocks, tests that read like English.</div>
+      </div>
+      <div class="manif">
+        <div class="num">iii.</div>
+        <div class="ttl">Ask before you build.</div>
+        <div class="body">The best optimization for an agent is building the right one from the start. Most production wins come from a question, not a clever prompt.</div>
+      </div>
+      <div class="manif">
+        <div class="num">iv.</div>
+        <div class="ttl">Adaptability is a <em>technical</em> skill.</div>
+        <div class="body">React, Rails, Go, Python, agents — the stack changes; how you absorb a new one shouldn&rsquo;t. Learning is the engineering, not the reward for it.</div>
+      </div>
+      <div class="manif">
+        <div class="num">v.</div>
+        <div class="ttl">A short notes document outlives a long meeting.</div>
+        <div class="body">Decisions written down survive turnover. Decisions said out loud rarely survive the week. The notebook in your hand is the proof.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §3 FIGURE 1 -->
+  <section class="sec reveal" id="fig-section">
+    <h2><span class="n">§3.</span>One thing I built</h2>
+    <div class="lead">— an AI infrastructure platform, drawn here once, and then we move on.</div>
+
+    <div class="figure-block">
+      <svg class="diagram" id="diagram" viewBox="0 0 1100 480" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#1c2218" stroke-width=".6" opacity=".25"/>
+          </pattern>
+        </defs>
+
+        <!-- title block -->
+        <g class="stroke delay-1">
+          <rect x="820" y="330" width="240" height="120" />
+          <line x1="820" y1="366" x2="1060" y2="366"/>
+          <line x1="820" y1="414" x2="1060" y2="414"/>
+          <line x1="940" y1="330" x2="940" y2="450"/>
+        </g>
+        <text x="828" y="352" class="stamp-t">DRAWING NO.</text>
+        <text x="948" y="352" class="stamp-t">SCALE</text>
+        <text x="828" y="388" font-family="Courier Prime" font-size="13" font-weight="700" fill="#1c2218">PLAT-001/v4</text>
+        <text x="948" y="388" font-family="Courier Prime" font-size="13" font-weight="700" fill="#1c2218">1 : 1</text>
+        <text x="828" y="406" class="stamp-t">DRAWN BY</text>
+        <text x="948" y="406" class="stamp-t">DATE</text>
+        <text x="828" y="430" font-family="Caveat" font-size="20" fill="#1d3d8a">A. Ponce</text>
+        <text x="948" y="430" font-family="Courier Prime" font-size="13" fill="#1c2218">04 · 2026</text>
+        <text x="828" y="446" font-family="Courier Prime" font-size="9" fill="#a8311b" letter-spacing=".18em">FIG. 1 — A SINGLE PLATFORM</text>
+
+        <!-- envoy bar -->
+        <g class="stroke delay-1">
+          <rect x="40" y="40" width="760" height="34"/>
+        </g>
+        <rect x="40" y="40" width="760" height="34" fill="url(#hatch)" stroke="none" opacity="1"/>
+        <text x="420" y="61" text-anchor="middle" font-family="Courier Prime" font-weight="700" font-size="11" fill="#1c2218" letter-spacing="3">ENVOY  ·  AUTH (REDIS, TTL 60s)  ·  ROUTING /v1/*</text>
+        <text x="40" y="32" class="stamp-t">A.</text>
+
+        <!-- modules -->
+        <g class="stroke delay-2"><rect x="40" y="120" width="140" height="120"/><line x1="40" y1="146" x2="180" y2="146"/></g>
+        <text x="50" y="139" font-family="Courier Prime" font-size="10" font-weight="700" fill="#a8311b" letter-spacing="2">M1 · GATEWAY</text>
+        <text x="110" y="170" text-anchor="middle" class="lbl">multi-provider</text>
+        <text x="110" y="187" text-anchor="middle" class="lbl">router</text>
+        <text x="110" y="216" text-anchor="middle" class="num-t">cost-fallback</text>
+        <text x="110" y="232" text-anchor="middle" font-family="Courier Prime" font-size="9.5" fill="#3e4538" letter-spacing="1">Go · Envoy · Redis</text>
+
+        <g class="stroke delay-2"><rect x="195" y="120" width="140" height="120"/><line x1="195" y1="146" x2="335" y2="146"/></g>
+        <text x="205" y="139" font-family="Courier Prime" font-size="10" font-weight="700" fill="#a8311b" letter-spacing="2">M2 · RAG</text>
+        <text x="265" y="170" text-anchor="middle" class="lbl">hybrid retrieval</text>
+        <text x="265" y="187" text-anchor="middle" class="lbl">+ rerank</text>
+        <text x="265" y="216" text-anchor="middle" class="num-t">async ingest</text>
+        <text x="265" y="232" text-anchor="middle" font-family="Courier Prime" font-size="9.5" fill="#3e4538" letter-spacing="1">Python · pgvector</text>
+
+        <g class="stroke delay-3"><rect x="350" y="120" width="140" height="120" stroke-width="2"/><line x1="350" y1="146" x2="490" y2="146"/></g>
+        <text x="360" y="139" font-family="Courier Prime" font-size="10" font-weight="700" fill="#a8311b" letter-spacing="2">M3 · ORCH.</text>
+        <text x="420" y="170" text-anchor="middle" class="lbl">durable agent</text>
+        <text x="420" y="187" text-anchor="middle" class="lbl">workflows</text>
+        <text x="420" y="216" text-anchor="middle" class="num-t">survives waits</text>
+        <text x="420" y="232" text-anchor="middle" font-family="Courier Prime" font-size="9.5" fill="#3e4538" letter-spacing="1">Python · Temporal</text>
+
+        <g class="stroke delay-3"><rect x="505" y="120" width="140" height="120"/><line x1="505" y1="146" x2="645" y2="146"/></g>
+        <text x="515" y="139" font-family="Courier Prime" font-size="10" font-weight="700" fill="#a8311b" letter-spacing="2">M4 · EVAL</text>
+        <text x="575" y="170" text-anchor="middle" class="lbl">LLM judges</text>
+        <text x="575" y="187" text-anchor="middle" class="lbl">+ drift</text>
+        <text x="575" y="216" text-anchor="middle" class="num-t">aligned · CI</text>
+        <text x="575" y="232" text-anchor="middle" font-family="Courier Prime" font-size="9.5" fill="#3e4538" letter-spacing="1">Python · S3</text>
+
+        <g class="stroke delay-4"><rect x="660" y="120" width="140" height="120"/><line x1="660" y1="146" x2="800" y2="146"/></g>
+        <text x="670" y="139" font-family="Courier Prime" font-size="10" font-weight="700" fill="#a8311b" letter-spacing="2">M5 · MESH</text>
+        <text x="730" y="170" text-anchor="middle" class="lbl">streaming</text>
+        <text x="730" y="187" text-anchor="middle" class="lbl">inference</text>
+        <text x="730" y="216" text-anchor="middle" class="num-t">replayable</text>
+        <text x="730" y="232" text-anchor="middle" font-family="Courier Prime" font-size="9.5" fill="#3e4538" letter-spacing="1">Kafka · Protobuf</text>
+
+        <!-- connectors top -->
+        <g class="stroke delay-4">
+          <line x1="110" y1="74" x2="110" y2="120"/>
+          <line x1="265" y1="74" x2="265" y2="120"/>
+          <line x1="420" y1="74" x2="420" y2="120"/>
+          <line x1="575" y1="74" x2="575" y2="120"/>
+          <line x1="730" y1="74" x2="730" y2="120"/>
+        </g>
+        <!-- connectors bottom -->
+        <g class="stroke delay-5">
+          <line x1="110" y1="240" x2="110" y2="296"/>
+          <line x1="265" y1="240" x2="265" y2="296"/>
+          <line x1="420" y1="240" x2="420" y2="296"/>
+          <line x1="575" y1="240" x2="575" y2="296"/>
+          <line x1="730" y1="240" x2="730" y2="296"/>
+        </g>
+
+        <!-- infra bar -->
+        <g class="stroke delay-5"><rect x="40" y="296" width="760" height="34"/></g>
+        <rect x="40" y="296" width="760" height="34" fill="url(#hatch)" stroke="none"/>
+        <text x="420" y="317" text-anchor="middle" font-family="Courier Prime" font-weight="700" font-size="11" fill="#1c2218" letter-spacing="3">POSTGRES · pgBOUNCER · REDIS · KAFKA · PROMETHEUS</text>
+        <text x="40" y="350" class="stamp-t">B.</text>
+
+        <!-- hand annotation -->
+        <text x="40" y="400" class="h-note" transform="rotate(-1 40 400)">tutorial branch first. then feat/. then notes. — a.p.</text>
+        <g class="stroke delay-6">
+          <line x1="40" y1="410" x2="780" y2="410" stroke-dasharray="4 4"/>
+        </g>
+
+        <!-- legend -->
+        <text x="40" y="448" class="stamp-t">LEGEND —</text>
+        <g class="stroke delay-6">
+          <rect x="120" y="438" width="14" height="12"/>
+        </g>
+        <rect x="120" y="438" width="14" height="12" fill="url(#hatch)" stroke="none"/>
+        <text x="140" y="448" font-family="Courier Prime" font-size="10" fill="#1c2218">control plane</text>
+        <g class="stroke delay-6"><rect x="250" y="438" width="14" height="12"/></g>
+        <text x="270" y="448" font-family="Courier Prime" font-size="10" fill="#1c2218">module</text>
+        <g class="stroke delay-6"><line x1="340" y1="444" x2="360" y2="444" stroke-dasharray="3 3"/></g>
+        <text x="366" y="448" font-family="Courier Prime" font-size="10" fill="#1c2218">field note</text>
+      </svg>
+
+      <div class="cap"><b>Fig. 1</b>Five services, one Envoy data plane, one set of shared infrastructure. Each module solves a distinct problem and was preceded by a six-hour tutorial branch — a small, defensible draft before any production line of code.</div>
+    </div>
+
+    <table class="spec">
+      <caption><b>Table 1.</b>Modules, abridged. Stack-only — see §6 to talk specifics.</caption>
+      <thead>
+        <tr><th>id</th><th>Service</th><th>Function</th><th>Stack</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="id">M1</td><td class="name">AI Gateway</td><td class="fn">Multi-provider LLM router with cost-based fallback &amp; per-tenant rate limits.</td><td class="fn">Go · Envoy · Redis</td></tr>
+        <tr><td class="id">M2</td><td class="name">RAG Platform</td><td class="fn">Hybrid semantic + BM25 retrieval, cross-encoder reranking, async ingestion.</td><td class="fn">Python · FastAPI · pgvector · Kafka</td></tr>
+        <tr><td class="id">M3</td><td class="name">Agent Orchestrator</td><td class="fn">Durable, multi-tenant agent workflows; pgvector memory; OPA guardrails.</td><td class="fn">Python · Temporal · pgvector · OPA</td></tr>
+        <tr><td class="id">M4</td><td class="name">LLM Eval</td><td class="fn">LLM-as-judge scoring with TPR/TNR alignment before any judge enters CI.</td><td class="fn">Python · Streamlit · S3</td></tr>
+        <tr><td class="id">M5</td><td class="name">Event Mesh</td><td class="fn">Real-time inference on streaming events for fraud and personalization.</td><td class="fn">Kafka · Protobuf · Schema Registry</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- §4 CHAPTERS -->
+  <section class="sec reveal">
+    <h2><span class="n">§4.</span>Field log</h2>
+    <div class="lead">— ten years in three chapters, qualitative.</div>
+
+    <div class="chapters">
+      <article class="chap">
+        <div class="col-num">CH.<b>03</b></div>
+        <div class="col-body">
+          <h4>AWS</h4>
+          <span class="role">Senior AI Engineer · 2025 →</span>
+          <p>
+            Designed and shipped an AI infrastructure platform: gateway,
+            retrieval, durable orchestration, evaluation, event mesh — five
+            services sharing one Envoy data plane and one control plane.
+          </p>
+          <p>
+            Established a discipline I now apply everywhere: each module
+            <span class="sc">begins with a tutorial branch</span> — a small,
+            time-capped draft whose only output is a notes document defending
+            the architectural choices to follow.
+          </p>
+        </div>
+        <div class="col-side">
+          <span class="pin">field note</span><br/>
+          &ldquo;tutorial first. <br/>production second. <br/>notes always.&rdquo;
+        </div>
+      </article>
+
+      <article class="chap">
+        <div class="col-num">CH.<b>02</b></div>
+        <div class="col-body">
+          <h4>Lovevery</h4>
+          <span class="role">Senior · RAG &amp; on-call</span>
+          <p>
+            Authored the RAG on-call playbook — what to look at, in what
+            order, when retrieval starts behaving badly at 3 a.m.
+          </p>
+          <p>
+            The VP of Engineering picked it up and rolled it out across the
+            wider organization. <span class="sc">A single document escalating
+            from team to org</span> taught me that good notes travel further
+            than good code.
+          </p>
+        </div>
+        <div class="col-side">
+          <span class="pin">field note</span><br/>
+          &ldquo;a playbook is <br/>a service —<br/> it has uptime.&rdquo;
+        </div>
+      </article>
+
+      <article class="chap">
+        <div class="col-num">CH.<b>01</b></div>
+        <div class="col-body">
+          <h4>Nuvocargo</h4>
+          <span class="role">Senior · Cross-border platform</span>
+          <p>
+            Mexico–US freight platform. Daily QA cycles for the PM team had
+            grown into a quiet productivity tax — repetitive, error-prone,
+            run by hand.
+          </p>
+          <p>
+            Built and maintained the Cypress automation that absorbed it.
+            <span class="sc">The task didn&rsquo;t go away — it stopped costing
+            anyone&rsquo;s morning.</span> A reminder that the best engineering
+            often shows up as something nobody notices anymore.
+          </p>
+        </div>
+        <div class="col-side">
+          <span class="pin">field note</span><br/>
+          &ldquo;invisible work <br/>is still work — <br/>especially then.&rdquo;
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- §5 METHOD -->
+  <section class="sec reveal">
+    <h2><span class="n">§5.</span>Method &amp; reagents</h2>
+    <div class="lead">— how I learn, how I ship, how I write it down.</div>
+
+    <div class="method">
+      <div class="body">
+        <p>
+          <b>When the technology is new</b> — a new model, a new agent runtime,
+          an unfamiliar retrieval technique — I start with a <b>tutorial branch</b>.
+          Time-capped, never merged. Its only deliverable is a notes document:
+          what I understood, what cost me time, what I&rsquo;d apply in production.
+          It&rsquo;s how I absorb the speed of AI without breaking anything in the way.
+        </p>
+        <p>
+          <b>When I&rsquo;m in production</b> — TDD by layer, tests against real
+          Postgres in containers (not in-memory imitations), factories over mocks
+          so tests read like English. For AI work the rule extends: <b>evals
+          before features</b>. If I can&rsquo;t measure whether it improved,
+          I don&rsquo;t ship it.
+        </p>
+        <p>
+          <b>When I&rsquo;m done</b> — I write. Decision records, on-call
+          playbooks, this notebook. Notes travel further than code; the playbook
+          I wrote at Lovevery escalated from team to org without me in the room.
+        </p>
+      </div>
+      <div class="reagents">
+        <h4>Reagents (selected)</h4>
+        <ul>
+          <li><span class="nm">Python</span><span class="why">RAG · agents · evals</span><span class="qty">∀</span></li>
+          <li><span class="nm">Go</span><span class="why">backends, M:N goroutines</span><span class="qty">∀</span></li>
+          <li><span class="nm">TypeScript</span><span class="why">edge &amp; tooling</span><span class="qty">·</span></li>
+          <li><span class="nm">Temporal</span><span class="why">durable execution</span><span class="qty">·</span></li>
+          <li><span class="nm">pgvector</span><span class="why">vectors with ACID</span><span class="qty">·</span></li>
+          <li><span class="nm">Kafka</span><span class="why">replayable log</span><span class="qty">·</span></li>
+          <li><span class="nm">Envoy</span><span class="why">auth + routing</span><span class="qty">·</span></li>
+          <li><span class="nm">FastAPI</span><span class="why">typed py services</span><span class="qty">·</span></li>
+          <li><span class="nm">Kubernetes</span><span class="why">k3d local · EKS prod</span><span class="qty">·</span></li>
+          <li><span class="nm">testcontainers</span><span class="why">real infra in tests</span><span class="qty">∀</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- §6 CONTACT -->
+  <section class="sec reveal">
+    <h2><span class="n">§6.</span>Correspondence</h2>
+    <div class="lead">— the easiest way to start a conversation.</div>
+
+    <div class="signoff">
+      <div>
+        <h2>Address all <em>correspondence</em> to the author.</h2>
+        <p class="lead">Senior AI engineer, freelance — United States and Latin America. Contracts, fractional, or one hard AI problem you&rsquo;d like me to take off your plate. Full overlap with US-PT, 0–3h with LatAm.</p>
+        <a class="cv-btn" href="#" download>Download CV — Ponce, A. (PDF)</a>
+
+        <div class="sig-wrap" id="sigwrap">
+          <span class="sig">A. Ponce</span>
+          <span class="meta">A. Ponce · 04 · 2026</span>
+        </div>
+      </div>
+
+      <aside class="corresp">
+        <div class="hd">Corresponding author</div>
+        <ul>
+          <li><span class="k">Email</span><a href="mailto:vnponce8@gmail.com">vnponce8@gmail.com</a><span class="arr">→</span></li>
+          <li><span class="k">LinkedIn</span><a href="#">/in/abel-ponce</a><span class="arr">→</span></li>
+          <li><span class="k">GitHub</span><a href="#">/vnponce</a><span class="arr">→</span></li>
+          <li><span class="k">Located</span><a href="#">UTC−6</a><span class="arr">·</span></li>
+          <li><span class="k">Tz overlap</span><a href="#">US-PT full · LatAm 0–3h</a><span class="arr">·</span></li>
+          <li><span class="k">Status</span><a href="#" style="color:var(--stamp)">Open · accepting</a><span class="arr">·</span></li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <div class="l">© Ponce, A. · MMXXVI</div>
+    <div class="c">— end of sheet 001 —</div>
+    <div class="r">Set in STIX Two &amp; Courier Prime</div>
+  </footer>
+
+</div>
+
+<script>
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+  }, {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // stamp wobble on load
+  setTimeout(()=>document.getElementById('stamp').classList.add('on'), 600);
+
+  // diagram draws line by line when it enters view
+  const diagram = document.getElementById('diagram');
+  const figIo = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ diagram.classList.add('drawn'); figIo.unobserve(e.target); }
+    });
+  }, {threshold:.25});
+  figIo.observe(document.getElementById('fig-section'));
+
+  // signature draws when its block enters
+  const sig = document.getElementById('sigwrap');
+  const sigIo = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ sig.classList.add('drawn'); sigIo.unobserve(e.target); }
+    });
+  }, {threshold:.4});
+  sigIo.observe(sig);
+
+  // coffee stains reveal as the user scrolls past their position
+  const stains = document.querySelectorAll('.stain');
+  const stainIo = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('on'); stainIo.unobserve(e.target); }
+    });
+  }, {threshold:.05, rootMargin:"-20% 0px"});
+  stains.forEach(s=>stainIo.observe(s));
+</script>
+</body>
+</html>
